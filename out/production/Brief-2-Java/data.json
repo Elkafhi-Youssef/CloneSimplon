@@ -1,0 +1,16 @@
+{
+  "Student": [
+
+    {
+      "Stu_id"   :  "1001",
+      "Stu_Name" :  "Ashish",
+      "Course"   :  "Java"
+    },
+
+    {
+      "Stu_id"   :  "1002",
+      "Stu_Name" :  "Rana",
+      "Course"   :  "Advance Java"
+    }
+  ]
+}
