@@ -1,67 +1,80 @@
 import models.SendEnhancedRequestBody;
 import models.SendEnhancedResponseBody;
 import models.SendRequestMessage;
+import module.ConnectDb;
+import outils.ConsoleColors;
 import services.Courier;
 import services.SendService;
 
 import java.io.IOException;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Scanner;
-import java.sql.Connection;
+
+
 public class Main {
 
-    public static void main(String[] args) {
-//        String jbdcURL = "jdbc:postgresql://localhost:5432/codingSchool";
-//        String username = "postgres";
-//        String password = "youssef1999";
-//        try {
-//            Connection connection = DriverManager.getConnection(jbdcURL,username,password);
-//            System.out.println("Connect to postgresql");
-//
-//        } catch (SQLException e) {
-//            System.out.println("Error in Connection With a database");
-//            throw new RuntimeException(e);
-//        }
+    public static void main(String[] args) throws IOException {
+        ConnectDb conn = ConnectDb.connect();
+        Scanner scanner = new Scanner(System.in);
+        System.out.println(ConsoleColors.GREEN+"------Welcome----------");
+        System.out.println(ConsoleColors.BLACK_BACKGROUND_BRIGHT);
+        Menu.registerChoice();
+        int regiseras = scanner.nextInt();
+        scanner.nextLine();
+        if (regiseras == 1) {
+            System.out.println("Please enter your email");
+            String email = scanner.nextLine();
+            System.out.println("==>Please enter your password;");
+            String password = scanner.nextLine();
+            boolean login =Action.loginAdmin("elkafhiyoussef@gmail.com","admin");
+//            // here I have to create a function name is login successful
+            if(login){
+                int choiceInMenuAdmin = 1;
+                while (choiceInMenuAdmin!=0){
+                    Menu.menuAdmin();
+                    choiceInMenuAdmin = scanner.nextInt();
 
-//        Admin A = new Admin(1,"Admin","youssef","elkafhiyoussef@gmail.com","1234567");
-//        System.out.println("menu********");
-//        System.out.println("1.add newn formateur ");
-//        Scanner choice = new Scanner(System.in);
-//        System.out.println("enter your your choice");
-//        int number;
-//        number =Integer.parseInt(choice.nextLine());
-//        while (number!=0){
-//            number =Integer.parseInt(choice.nextLine());
-//            if(number == 1){
-//                A.creerFormateur();
-//                for (int i = 0; i < GloabState.formateurs.size();i++)
-//                {
-//                    System.out.println(GloabState.formateurs.get(i).fullNmae);
-//                }
-//            }
-//        }
-//        System.out.println("xkon nta ila kant admin dir 1 ila kant prof dir 2");
+                    switch (choiceInMenuAdmin) {
+                        case 1 -> Action.createFormatuer();
+                        case 2 -> Action.createApprenant();
+                        case 3 -> Action.createPromo();
+                        case 4 -> Action.addFormateurToPromo();
+                        default -> System.out.println("bye");
+                    }
+                }
 
-//        int auth = 1;
-//        int number =100;
-//        int numberGlobal;
-//        do {
-//
-//            if (auth == 1) {
-//
-//                Menu.menuAdmin();
-//                number = Integer.parseInt(choice.nextLine());
-//
-//
-//                switch (number) {
-//                    case 1 -> Action.createFormateur();
-//                    case 2 -> Action.creerApprenant();
-//                    default -> System.out.println("Default ");
-//                }
-//            }
-//        } while (number != 0) ;
+
+            }else{
+                System.out.println("failed");
+            }
+
+            System.out.println("here daz");
+        } else if (regiseras == 2) {
+            System.out.println("Please enter your email");
+            String email = scanner.nextLine();
+            System.out.println("==>Please enter your password;");
+            String password = scanner.nextLine();
+            int loginformateur = Action.loginFormateur("josephekfi@gmail.com","formateur");
+            if(loginformateur != 0){
+                int choiceInMenuFormateur = 1;
+                while (choiceInMenuFormateur!=0){
+                    Menu.menuFormateur();
+                    choiceInMenuFormateur = scanner.nextInt();
+
+                    switch (choiceInMenuFormateur) {
+                        case 1 -> Action.addApprenantToPromo();
+                        case 2 -> Action.createBrief();
+                        case 3 -> Action.distributedBriefs();
+                        default -> System.out.println("bye");
+                    }
+                }
+
+
+            }else{
+                System.out.println("failed");
+            }
+        }
+        System.out.println(ConsoleColors.WHITE );
     }
 
     public void  sendEmail(){
